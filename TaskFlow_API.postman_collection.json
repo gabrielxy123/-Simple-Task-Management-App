@@ -272,10 +272,10 @@
           },
           "response": [
             {
-              "name": "204 No Content – Deleted",
-              "status": "No Content",
-              "code": 204,
-              "body": ""
+              "name": "200 OK – Deleted Successfully",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"message\": \"Task 'My New Task' deleted successfully\",\n  \"id\": 8\n}"
             },
             {
               "name": "404 Not Found",

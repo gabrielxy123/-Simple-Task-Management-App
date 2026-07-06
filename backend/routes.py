@@ -79,15 +79,17 @@ def update_task(
     return task
 
 
-@router.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Tasks"])
+@router.delete("/tasks/{task_id}", status_code=status.HTTP_200_OK, tags=["Tasks"])
 def delete_task(
     task_id: int,
     db: Session = Depends(get_db),
     _: models.User = Depends(get_current_user),
 ):
-    """Delete a task by ID."""
+    """Delete a task by ID. Returns confirmation message."""
     task = db.query(models.Task).filter(models.Task.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
+    task_title = task.title
     db.delete(task)
     db.commit()
+    return {"message": f"Task '{task_title}' deleted successfully", "id": task_id}
