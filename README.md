@@ -31,7 +31,7 @@ A modern, full-stack task management application built for the **Moonlay Technol
 | Backend   | Python 3.12 + FastAPI              |
 | ORM       | SQLAlchemy 2.0                     |
 | Database  | PostgreSQL                         |
-| Auth      | JWT (python-jose + passlib bcrypt) |
+| Auth      | JWT (python-jose + bcrypt)         |
 | AI Bonus  | Google Gemini API (gemini-1.5-flash)|
 
 ---
