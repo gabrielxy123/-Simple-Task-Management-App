@@ -40,9 +40,8 @@ A modern, full-stack task management application built for the **Moonlay Technol
 
 ### Prerequisites
 
-- Python 3.10+ and `pip`
-- Node.js 18+ and `npm`
-- PostgreSQL (running locally or via Docker)
+- **Docker & Docker Compose** (Recommended for easiest setup)
+- *OR* Python 3.12+, Node.js 20+, and PostgreSQL (if running manually)
 
 ---
 
@@ -55,7 +54,31 @@ cd Simple-Task-Management-App
 
 ---
 
-### 2. Backend Setup
+### 2. Run with Docker (Recommended) 🐳
+
+The easiest way to run the entire stack (PostgreSQL, FastAPI Backend, Next.js Frontend) is using Docker Compose.
+
+```bash
+# 1. Setup environment file
+copy backend\.env.example backend\.env
+# (Optional) Edit backend/.env to add your GEMINI_API_KEY for the chatbot
+
+# 2. Start all services
+docker compose up --build
+```
+
+That's it! 🚀
+- **Frontend App**: http://localhost:3000
+- **Backend API Docs**: http://localhost:8000/docs
+- **Database**: `localhost:5432` (User: `postgres`, Pass: `taskflow123`)
+
+*Note: The database is automatically seeded with default users and sample tasks on startup.*
+
+---
+
+### 3. Manual Setup (Without Docker)
+
+#### Backend Setup
 
 ```bash
 cd backend
@@ -95,7 +118,7 @@ Swagger API Docs: **http://localhost:8000/docs**
 
 ---
 
-### 3. Frontend Setup
+#### Frontend Setup
 
 ```bash
 cd frontend
