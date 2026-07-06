@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Task, TaskStatus } from "@/lib/types";
 import { updateTask, deleteTask } from "@/lib/api";
 import styles from "./TaskCard.module.css";
@@ -42,6 +43,8 @@ function getInitials(name: string): string {
 export default function TaskCard({ task, onEdit, onRefresh }: Props) {
   const { label, badgeClass } = statusConfig[task.status];
   const overdue = isOverdue(task.deadline, task.status);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   async function handleMoveStatus(direction: "prev" | "next") {
     const idx = STATUS_ORDER.indexOf(task.status);
@@ -51,10 +54,15 @@ export default function TaskCard({ task, onEdit, onRefresh }: Props) {
     onRefresh();
   }
 
-  async function handleDelete() {
-    if (!confirm(`Delete task "${task.title}"?`)) return;
-    await deleteTask(task.id);
-    onRefresh();
+  async function handleConfirmDelete() {
+    setDeleting(true);
+    try {
+      await deleteTask(task.id);
+      onRefresh();
+    } catch {
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
   }
 
   return (
@@ -81,7 +89,7 @@ export default function TaskCard({ task, onEdit, onRefresh }: Props) {
             id={`task-delete-${task.id}`}
             className={`${styles.actionBtn} ${styles.deleteBtn}`}
             title="Delete task"
-            onClick={handleDelete}
+            onClick={() => setConfirmDelete(true)}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" />
@@ -101,49 +109,79 @@ export default function TaskCard({ task, onEdit, onRefresh }: Props) {
         <p className={styles.description}>{task.description}</p>
       )}
 
-      {/* Footer */}
-      <div className={styles.footer}>
-        {/* Deadline */}
-        {task.deadline && (
-          <span className={`${styles.deadline} ${overdue ? styles.deadlineOverdue : ""}`}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-            </svg>
-            {formatDate(task.deadline)}
-          </span>
-        )}
+      {/* Inline Delete Confirmation */}
+      {confirmDelete && (
+        <div className={styles.confirmBox}>
+          <p className={styles.confirmText}>Delete this task?</p>
+          <div className={styles.confirmBtns}>
+            <button
+              id={`task-cancel-delete-${task.id}`}
+              className={styles.confirmCancelBtn}
+              onClick={() => setConfirmDelete(false)}
+              disabled={deleting}
+            >
+              Cancel
+            </button>
+            <button
+              id={`task-confirm-delete-${task.id}`}
+              className={styles.confirmDeleteBtn}
+              onClick={handleConfirmDelete}
+              disabled={deleting}
+            >
+              {deleting ? (
+                <span className="spinner" style={{ width: 12, height: 12, borderWidth: 1.5 }} />
+              ) : null}
+              {deleting ? "Deleting…" : "Delete"}
+            </button>
+          </div>
+        </div>
+      )}
 
-        {/* Move status buttons */}
-        <div className={styles.moveButtons}>
-          {task.status !== "Todo" && (
-            <button
-              id={`task-prev-${task.id}`}
-              className={styles.moveBtn}
-              title="Move back"
-              onClick={() => handleMoveStatus("prev")}
-            >
-              ←
-            </button>
+      {/* Footer */}
+      {!confirmDelete && (
+        <div className={styles.footer}>
+          {/* Deadline */}
+          {task.deadline && (
+            <span className={`${styles.deadline} ${overdue ? styles.deadlineOverdue : ""}`}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+              </svg>
+              {formatDate(task.deadline)}
+            </span>
           )}
-          {task.status !== "Done" && (
-            <button
-              id={`task-next-${task.id}`}
-              className={styles.moveBtn}
-              title="Move forward"
-              onClick={() => handleMoveStatus("next")}
-            >
-              →
-            </button>
+
+          {/* Move status buttons */}
+          <div className={styles.moveButtons}>
+            {task.status !== "Todo" && (
+              <button
+                id={`task-prev-${task.id}`}
+                className={styles.moveBtn}
+                title="Move back"
+                onClick={() => handleMoveStatus("prev")}
+              >
+                ←
+              </button>
+            )}
+            {task.status !== "Done" && (
+              <button
+                id={`task-next-${task.id}`}
+                className={styles.moveBtn}
+                title="Move forward"
+                onClick={() => handleMoveStatus("next")}
+              >
+                →
+              </button>
+            )}
+          </div>
+
+          {/* Assignee avatar */}
+          {task.assignee && (
+            <div className={styles.avatar} title={task.assignee.username}>
+              {getInitials(task.assignee.username)}
+            </div>
           )}
         </div>
-
-        {/* Assignee avatar */}
-        {task.assignee && (
-          <div className={styles.avatar} title={task.assignee.username}>
-            {getInitials(task.assignee.username)}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
