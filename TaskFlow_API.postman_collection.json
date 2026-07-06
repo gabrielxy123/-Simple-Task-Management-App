@@ -1,39 +1,15 @@
 {
   "info": {
+    "_postman_id": "0b24415d-e681-4f69-9369-9d6ec647222e",
     "name": "TaskFlow API",
     "description": "REST API for Simple Task Management App – Moonlay Technologies Technical Test\n\n## How to Use:\n1. Run **POST /api/login** first\n2. Copy the `access_token` from the response\n3. The collection uses a variable `{{token}}` — set it in **Collection Variables** or use the auto-set script\n4. All other requests will automatically use Bearer token auth",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:8000",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "task_id",
-      "value": "1",
-      "type": "string"
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{token}}",
-        "type": "string"
-      }
-    ]
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41411061",
+    "_collection_link": "https://go.postman.co/collection/41411061-0b24415d-e681-4f69-9369-9d6ec647222e?source=collection_link"
   },
   "item": [
     {
-      "name": "🏥 Health",
+      "name": "Health",
       "item": [
         {
           "name": "Health Check",
@@ -42,8 +18,12 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/",
-              "host": ["{{base_url}}"],
-              "path": [""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
             },
             "description": "Check if the API is running. No auth required."
           },
@@ -52,10 +32,16 @@
               "name": "200 OK",
               "originalRequest": {
                 "method": "GET",
-                "url": { "raw": "{{base_url}}/" }
+                "header": [],
+                "url": {
+                  "raw": ""
+                }
               },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"message\": \"Task Management API is running 🚀\",\n  \"docs\": \"/docs\"\n}"
             }
           ]
@@ -63,7 +49,7 @@
       ]
     },
     {
-      "name": "🔐 Auth",
+      "name": "Auth",
       "item": [
         {
           "name": "Login",
@@ -83,20 +69,34 @@
             }
           ],
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/api/login",
-              "host": ["{{base_url}}"],
-              "path": ["api", "login"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
             },
             "description": "Login with username and password. Returns a JWT token.\n\n**Auto-saves token** to `{{token}}` collection variable via test script.\n\nDefault credentials:\n- admin / admin123\n- alice / alice123\n- bob / bob123\n- charlie / charlie123"
           },
@@ -105,20 +105,61 @@
               "name": "200 OK – Login Success",
               "originalRequest": {
                 "method": "POST",
+                "header": [],
                 "body": {
                   "mode": "raw",
                   "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
                 },
-                "url": { "raw": "{{base_url}}/api/login" }
+                "url": {
+                  "raw": ""
+                }
               },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"token_type\": \"bearer\",\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"admin\",\n    \"created_at\": \"2026-07-06T10:00:00Z\"\n  }\n}"
             },
             {
               "name": "401 Unauthorized – Wrong Credentials",
+              "originalRequest": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                },
+                "description": "Login with username and password. Returns a JWT token.\n\n**Auto-saves token** to `{{token}}` collection variable via test script.\n\nDefault credentials:\n- admin / admin123\n- alice / alice123\n- bob / bob123\n- charlie / charlie123"
+              },
               "status": "Unauthorized",
               "code": 401,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"detail\": \"Invalid username or password\"\n}"
             }
           ]
@@ -126,7 +167,7 @@
       ]
     },
     {
-      "name": "👤 Users",
+      "name": "Users",
       "item": [
         {
           "name": "Get All Users",
@@ -135,16 +176,39 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/users",
-              "host": ["{{base_url}}"],
-              "path": ["api", "users"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
             },
             "description": "Get all registered users. Used for the assignee dropdown.\n\n**Requires Bearer Token.**"
           },
           "response": [
             {
               "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users"
+                  ]
+                },
+                "description": "Get all registered users. Used for the assignee dropdown.\n\n**Requires Bearer Token.**"
+              },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "[\n  { \"id\": 1, \"username\": \"admin\", \"created_at\": \"2026-07-06T10:00:00Z\" },\n  { \"id\": 2, \"username\": \"alice\", \"created_at\": \"2026-07-06T10:00:00Z\" },\n  { \"id\": 3, \"username\": \"bob\",   \"created_at\": \"2026-07-06T10:00:00Z\" },\n  { \"id\": 4, \"username\": \"charlie\", \"created_at\": \"2026-07-06T10:00:00Z\" }\n]"
             }
           ]
@@ -152,7 +216,7 @@
       ]
     },
     {
-      "name": "📋 Tasks",
+      "name": "Tasks",
       "item": [
         {
           "name": "Get All Tasks",
@@ -161,16 +225,39 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/tasks",
-              "host": ["{{base_url}}"],
-              "path": ["api", "tasks"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
             },
             "description": "Get all tasks with assignee info.\n\n**Requires Bearer Token.**"
           },
           "response": [
             {
               "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/tasks",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks"
+                  ]
+                },
+                "description": "Get all tasks with assignee info.\n\n**Requires Bearer Token.**"
+              },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Setup Project Repository\",\n    \"description\": \"Initialize Git repository and configure CI/CD pipeline.\",\n    \"status\": \"Done\",\n    \"deadline\": \"2026-07-01T00:00:00Z\",\n    \"assignee_id\": 1,\n    \"assignee\": {\n      \"id\": 1,\n      \"username\": \"admin\",\n      \"created_at\": \"2026-07-06T10:00:00Z\"\n    },\n    \"created_at\": \"2026-07-06T10:00:00Z\",\n    \"updated_at\": \"2026-07-06T10:00:00Z\"\n  }\n]"
             }
           ]
@@ -195,31 +282,107 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"My New Task\",\n  \"description\": \"Task description here\",\n  \"status\": \"Todo\",\n  \"deadline\": \"2026-07-15T17:00:00Z\",\n  \"assignee_id\": 1\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/api/tasks",
-              "host": ["{{base_url}}"],
-              "path": ["api", "tasks"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
             },
             "description": "Create a new task.\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nAll fields except `title` are optional."
           },
           "response": [
             {
               "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"My New Task\",\n  \"description\": \"Task description here\",\n  \"status\": \"Todo\",\n  \"deadline\": \"2026-07-15T17:00:00Z\",\n  \"assignee_id\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/tasks",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks"
+                  ]
+                },
+                "description": "Create a new task.\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nAll fields except `title` are optional."
+              },
               "status": "Created",
               "code": 201,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"id\": 8,\n  \"title\": \"My New Task\",\n  \"description\": \"Task description here\",\n  \"status\": \"Todo\",\n  \"deadline\": \"2026-07-15T17:00:00Z\",\n  \"assignee_id\": 1,\n  \"assignee\": { \"id\": 1, \"username\": \"admin\", \"created_at\": \"2026-07-06T10:00:00Z\" },\n  \"created_at\": \"2026-07-06T12:00:00Z\",\n  \"updated_at\": \"2026-07-06T12:00:00Z\"\n}"
             },
             {
               "name": "422 Validation Error – Missing title",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"My New Task\",\n  \"description\": \"Task description here\",\n  \"status\": \"Todo\",\n  \"deadline\": \"2026-07-15T17:00:00Z\",\n  \"assignee_id\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/tasks",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks"
+                  ]
+                },
+                "description": "Create a new task.\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nAll fields except `title` are optional."
+              },
               "status": "Unprocessable Entity",
               "code": 422,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\"body\", \"title\"],\n      \"msg\": \"Field required\"\n    }\n  ]\n}"
             }
           ]
@@ -229,31 +392,110 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"title\": \"Updated Task Title\",\n  \"status\": \"In Progress\",\n  \"assignee_id\": 2\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/api/tasks/{{task_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "tasks", "{{task_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{task_id}}"
+              ]
             },
             "description": "Update a task by ID. All fields are optional (partial update supported).\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nUses `{{task_id}}` variable — auto-set when you run **Create Task**."
           },
           "response": [
             {
               "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Task Title\",\n  \"status\": \"In Progress\",\n  \"assignee_id\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                },
+                "description": "Update a task by ID. All fields are optional (partial update supported).\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nUses `{{task_id}}` variable — auto-set when you run **Create Task**."
+              },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"id\": 8,\n  \"title\": \"Updated Task Title\",\n  \"description\": \"Task description here\",\n  \"status\": \"In Progress\",\n  \"deadline\": \"2026-07-15T17:00:00Z\",\n  \"assignee_id\": 2,\n  \"assignee\": { \"id\": 2, \"username\": \"alice\", \"created_at\": \"2026-07-06T10:00:00Z\" },\n  \"created_at\": \"2026-07-06T12:00:00Z\",\n  \"updated_at\": \"2026-07-06T12:05:00Z\"\n}"
             },
             {
               "name": "404 Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Task Title\",\n  \"status\": \"In Progress\",\n  \"assignee_id\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                },
+                "description": "Update a task by ID. All fields are optional (partial update supported).\n\n**Requires Bearer Token.**\n\nStatus options: `Todo` | `In Progress` | `Done`\n\nUses `{{task_id}}` variable — auto-set when you run **Create Task**."
+              },
               "status": "Not Found",
               "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"detail\": \"Task not found\"\n}"
             }
           ]
@@ -265,22 +507,66 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/tasks/{{task_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "tasks", "{{task_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{task_id}}"
+              ]
             },
             "description": "Delete a task by ID. Returns 204 No Content on success.\n\n**Requires Bearer Token.**\n\nUses `{{task_id}}` variable."
           },
           "response": [
             {
               "name": "200 OK – Deleted Successfully",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                },
+                "description": "Delete a task by ID. Returns 204 No Content on success.\n\n**Requires Bearer Token.**\n\nUses `{{task_id}}` variable."
+              },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"message\": \"Task 'My New Task' deleted successfully\",\n  \"id\": 8\n}"
             },
             {
               "name": "404 Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/tasks/{{task_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tasks",
+                    "{{task_id}}"
+                  ]
+                },
+                "description": "Delete a task by ID. Returns 204 No Content on success.\n\n**Requires Bearer Token.**\n\nUses `{{task_id}}` variable."
+              },
               "status": "Not Found",
               "code": 404,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"detail\": \"Task not found\"\n}"
             }
           ]
@@ -288,43 +574,146 @@
       ]
     },
     {
-      "name": "🤖 Chat (AI Bonus)",
+      "name": "Chatbot",
       "item": [
         {
           "name": "Chat with AI Assistant",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"message\": \"What tasks are currently In Progress?\"\n}",
-              "options": { "raw": { "language": "json" } }
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
             "url": {
               "raw": "{{base_url}}/api/chat",
-              "host": ["{{base_url}}"],
-              "path": ["api", "chat"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "chat"
+              ]
             },
             "description": "AI Chatbot powered by Google Gemini. Ask questions about your tasks.\n\n**Requires Bearer Token.**\n**Requires GEMINI_API_KEY to be set in backend .env**\n\nExample questions:\n- \"What tasks are overdue?\"\n- \"Who is assigned to In Progress tasks?\"\n- \"How many tasks are done?\"\n- \"What is Alice working on?\""
           },
           "response": [
             {
               "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"What tasks are currently In Progress?\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat"
+                  ]
+                },
+                "description": "AI Chatbot powered by Google Gemini. Ask questions about your tasks.\n\n**Requires Bearer Token.**\n**Requires GEMINI_API_KEY to be set in backend .env**\n\nExample questions:\n- \"What tasks are overdue?\"\n- \"Who is assigned to In Progress tasks?\"\n- \"How many tasks are done?\"\n- \"What is Alice working on?\""
+              },
               "status": "OK",
               "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"reply\": \"Currently, there are 2 tasks In Progress:\\n1. 'Implement REST API' assigned to admin (deadline: July 8)\\n2. 'Build Kanban Frontend' assigned to alice (deadline: July 9)\"\n}"
             },
             {
               "name": "503 AI Not Configured",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"What tasks are currently In Progress?\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/chat",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "chat"
+                  ]
+                },
+                "description": "AI Chatbot powered by Google Gemini. Ask questions about your tasks.\n\n**Requires Bearer Token.**\n**Requires GEMINI_API_KEY to be set in backend .env**\n\nExample questions:\n- \"What tasks are overdue?\"\n- \"Who is assigned to In Progress tasks?\"\n- \"How many tasks are done?\"\n- \"What is Alice working on?\""
+              },
               "status": "Service Unavailable",
               "code": 503,
+              "_postman_previewlanguage": "Text",
+              "header": [],
+              "cookie": [],
               "body": "{\n  \"detail\": \"AI service is not configured. Please set GEMINI_API_KEY.\"\n}"
             }
           ]
         }
       ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "task_id",
+      "value": "1",
+      "type": "string"
     }
   ]
 }
