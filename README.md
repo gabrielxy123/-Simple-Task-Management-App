@@ -18,7 +18,7 @@ A modern, full-stack task management application built for the **Moonlay Technol
 - ✅ **Deadline tracking** with overdue indicator
 - ✅ **Search & Filter** by keyword and assignee
 - ✅ **Real-time stats** with completion progress bar
-- ⭐ **Bonus: AI Chatbot** – Powered by Google Gemini, answers questions about your tasks
+- ⭐ **Bonus: AI Chatbot** – Powered by Groq (Llama 3.1), answers questions about your tasks
 
 ---
 
@@ -32,7 +32,7 @@ A modern, full-stack task management application built for the **Moonlay Technol
 | ORM       | SQLAlchemy 2.0                     |
 | Database  | PostgreSQL                         |
 | Auth      | JWT (python-jose + bcrypt)         |
-| AI Bonus  | Google Gemini API (gemini-1.5-flash)|
+| AI Bonus  | Groq API (Llama 3.1 8B Instant)     |
 
 ---
 
@@ -61,7 +61,7 @@ The easiest way to run the entire stack (PostgreSQL, FastAPI Backend, Next.js Fr
 ```bash
 # 1. Setup environment file
 copy backend\.env.example backend\.env
-# (Optional) Edit backend/.env to add your GEMINI_API_KEY for the chatbot
+# (Optional) Edit backend/.env to add your GROQ_API_KEY for the chatbot
 
 # 2. Start all services
 docker compose up --build
@@ -99,8 +99,7 @@ Edit `backend/.env`:
 ```env
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskdb
 SECRET_KEY=your_secret_key_here
-GEMINI_API_KEY=your_gemini_api_key_here   # optional, for AI chatbot
-```
+GROQ_API_KEY=gsk_your_groq_api_key_here   # optional, for AI chatbot```
 
 ```bash
 # Create database (PostgreSQL must be running)
@@ -200,10 +199,10 @@ Simple-Task-Management-App/
 
 ## 🤖 AI Chatbot (Bonus)
 
-The chatbot is powered by **Google Gemini**. It automatically receives your current task data as context, so you can ask questions like:
+The chatbot is powered by **Groq (Llama 3.1)**. It automatically receives your current task data as context, so you can ask questions like:
 
 - *"What tasks are overdue?"*
 - *"Who is responsible for In Progress tasks?"*
 - *"How many tasks are done?"*
 
-To enable it, add your `GEMINI_API_KEY` to `backend/.env`.
+To enable it, add your `GROQ_API_KEY` to `backend/.env`.
