@@ -1,3 +1,4 @@
+import requests
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -9,6 +10,10 @@ from config import settings
 
 router = APIRouter()
 
+# Groq OpenAI-compatible endpoint
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_MODEL = "llama-3.1-8b-instant"
+
 
 @router.post("/chat", response_model=schemas.ChatResponse, tags=["Chat"])
 def chat_with_ai(
@@ -16,9 +21,12 @@ def chat_with_ai(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
-    """AI Chatbot endpoint powered by Google Gemini. Answers questions about tasks."""
-    if not settings.GEMINI_API_KEY:
-        raise HTTPException(status_code=503, detail="AI service is not configured. Please set GEMINI_API_KEY.")
+    """AI Chatbot endpoint powered by Groq (Llama 3.1)."""
+    if not settings.GROQ_API_KEY:
+        raise HTTPException(
+            status_code=503,
+            detail="AI service is not configured. Please set GROQ_API_KEY.",
+        )
 
     # Fetch current tasks from database
     tasks = db.query(models.Task).all()
@@ -43,14 +51,37 @@ User asking: {current_user.username}
 """
 
     try:
-        import google.generativeai as genai
-
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            system_instruction=system_prompt,
+        response = requests.post(
+            GROQ_API_URL,
+            headers={
+                "Authorization": f"Bearer {settings.GROQ_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": GROQ_MODEL,
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": payload.message},
+                ],
+                "max_tokens": 512,
+                "temperature": 0.7,
+            },
+            timeout=30,
         )
-        response = model.generate_content(payload.message)
-        return {"reply": response.text}
+
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=502,
+                detail=f"AI service error: {response.text}",
+            )
+
+        data = response.json()
+        reply = data["choices"][0]["message"]["content"]
+        return {"reply": reply}
+
+    except HTTPException:
+        raise
+    except requests.exceptions.Timeout:
+        raise HTTPException(status_code=504, detail="AI service timed out. Please try again.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI service error: {str(e)}")

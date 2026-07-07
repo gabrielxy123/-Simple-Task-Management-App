@@ -84,7 +84,7 @@ export default function Chatbot() {
               </div>
               <div>
                 <p className={styles.headerTitle}>Task Assistant</p>
-                <p className={styles.headerSub}>Powered by Gemini</p>
+                <p className={styles.headerSub}>Powered by Llama</p>
               </div>
             </div>
             <button className={styles.clearBtn} onClick={() => setMessages([messages[0]])} title="Clear chat">

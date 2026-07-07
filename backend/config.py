@@ -5,7 +5,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "supersecretkey_changeme_in_production"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
-    GEMINI_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""  # kept for backwards compat
+    HF_API_TOKEN: str = ""
+    GROQ_API_KEY: str = ""
 
     class Config:
         env_file = ".env"
