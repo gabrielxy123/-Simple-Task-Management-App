@@ -3,8 +3,12 @@ __pycache__/
 *.pyc
 *.pyo
 venv/
-.env
 *.egg-info/
+
+# ── Environment / Secrets (JANGAN di-commit!) ────────────────
+.env
+.env.*
+!.env.example
 
 # Node / Next.js
 node_modules/
@@ -12,6 +16,9 @@ node_modules/
 out/
 .env.local
 .env*.local
+
+# Docker overrides (bisa berisi secrets lokal)
+docker-compose.override.yml
 
 # Misc
 .DS_Store
