@@ -15,10 +15,22 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS – allow Next.js dev server
+# CORS – allow Next.js dev server + Vercel production
+import os
+
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# Add custom production frontend URL from environment (set via Railway/Vercel)
+if os.getenv("FRONTEND_URL"):
+    ALLOWED_ORIGINS.append(os.getenv("FRONTEND_URL"))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://.*\.vercel\.app",  # allow all vercel preview URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
